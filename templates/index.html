@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <title>Great Number Game</title>
+</head>
+
+<body class="bg-dark text-light text-center">
+    <h1 class="mt-lg-3">Welcome to the Great Number Game</h1>
+    <h3 class="m-md-5">I am thinking of a number between 1 and 100...</h3>
+    <div>
+        {% if session['answer'] == "Guess Higher!" %}
+        <p class="bg-primary w-50 m-auto">{{ session['answer'] }}</p>
+        {% endif %}
+        {% if session['answer'] == "Guess Lower!" %}
+        <p class="bg-danger w-50 m-auto">{{ session['answer'] }}</p>
+        {% endif %}
+        {% if session['answer'] == "You Guessed Correctly!" %}
+        <div class='bg-success w-50 m-auto'>
+            <p class="text-light">{{ session['answer'] }}</p>
+            <p class="text-light">The number was: <span class="text-danger fw-bolder text-decoration-underline">{{ session['random_num'] }}</span></p>
+            <button class="btn-dark mb-3"><a class="text-decoration-none text-light" href="/destroy_session">Play Again?</a></button>
+        </div>
+        {% endif %}
+    </div>
+    <form action="/guess" method="post" class="border border-3 rounded border-warning p-md-3 m-auto w-50 text-center">
+        <label for="num" class="text-warning m-2">Take a guess!</label>
+        {% if session['attempts'] == 0 %}
+        <p>You have 5 attempts, guess wisely..</p>
+        {% endif %}
+        {% if session['attempts'] %}
+        <p>Attempts: <span class="text-danger">{{ session['attempts'] }}</span></p>
+        {% endif %}
+        {% if session['attempts'] == 4 %}
+        <p>One more guess!</p>
+        {% endif %}
+        {% if session['attempts'] == 5 %}
+        <p class="text-danger">You Lose!</p>
+        {% endif %}
+        <br />
+        <input type="text" name="num" class="m-2" />
+        <br />
+        <input type="submit" value="Guess" />
+    </form>
+    <form action="/destroy_session" class="m-auto text-center m-md-2">
+        <button type='submit' class="btn-danger text-center m-auto p-2">Reset</button>
+    </form>
+</body>
+
+</html>
